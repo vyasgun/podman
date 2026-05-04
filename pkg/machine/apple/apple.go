@@ -25,7 +25,10 @@ import (
 	"go.podman.io/common/pkg/strongunits"
 )
 
-const applehvMACAddress = "5a:94:ef:e4:0c:ee"
+const (
+	applehvMACAddress = "5a:94:ef:e4:0c:ee"
+	timeSyncVsockPort = 1234
+)
 
 var (
 	gvProxyWaitBackoff        = 500 * time.Millisecond
@@ -180,7 +183,7 @@ func StartGenericAppleVM(mc *vmconfigs.MachineConfig, cmdBinary string, bootload
 	}
 	vm.Devices = append(vm.Devices, mounts...)
 
-	timesync, err := vfConfig.TimeSyncNew(1234)
+	timesync, err := vfConfig.TimeSyncNew(timeSyncVsockPort)
 	if err != nil {
 		return nil, nil, err
 	}
