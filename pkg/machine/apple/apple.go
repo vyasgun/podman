@@ -180,7 +180,7 @@ func StartGenericAppleVM(mc *vmconfigs.MachineConfig, cmdBinary string, bootload
 	}
 	vm.Devices = append(vm.Devices, mounts...)
 
-	timesync, err := vfConfig.TimeSyncNew(1234)
+	timesync, err := vfConfig.TimeSyncNew(define.TimeSyncVsockPort)
 	if err != nil {
 		return nil, nil, err
 	}
