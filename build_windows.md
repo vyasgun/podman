@@ -92,7 +92,7 @@ dotnet tool install --global wix --version 5.0.2
 
 :information_source: Because WiX Toolset has changed its licensing model when v6
 was released, [Podman still uses the WiX Toolset
-v5.0.2](https://github.com/containers/podman/issues/27042)
+v5.0.2](https://github.com/podman-container-tools/podman/issues/27042)
 and we recommend using it as well for local development (although it's not
 strictly required).
 
@@ -150,7 +150,7 @@ CRLF.
 Then run the command to clone the Podman git repository:
 
 ```pwsh
-git clone https://github.com/containers/podman
+git clone https://github.com/podman-container-tools/podman
 ```
 
 It creates the folder `podman` in the current directory and clones the Podman
@@ -160,7 +160,7 @@ git repository into it.
 
 A developer can build the Podman client for Windows and the Windows installer
 with the PowerShell script
-[winmake.ps1](https://github.com/containers/podman/blob/main/winmake.ps1).
+[winmake.ps1](https://github.com/podman-container-tools/podman/blob/main/winmake.ps1).
 
 Windows sets the ExecutionPolicy to `Restricted` by default; running scripts is
 prohibited. Determine the ExecutionPolicy on the machine with this command:
@@ -263,7 +263,7 @@ provider="hyperv"
 ```
 
 Find the complete list of configuration options in the
-[documentation](https://github.com/containers/container-libs/blob/main/common/docs/containers.conf.5.md).
+[documentation](https://github.com/podman-container-tools/container-libs/blob/main/common/docs/containers.conf.5.md).
 
 ### Create and start a podman machine
 
@@ -291,7 +291,7 @@ Use the locally built Podman client for Windows to run containers:
 ```
 
 To learn how to use the Podman client, refer to its
-[tutorial](https://github.com/containers/podman/blob/main/docs/tutorials/remote_client.md).
+[tutorial](https://github.com/podman-container-tools/podman/blob/main/docs/tutorials/remote_client.md).
 
 ## Build and test the Podman Windows installer
 
