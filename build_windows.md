@@ -19,6 +19,7 @@ Windows.
 - [Build and test the Podman client for Windows](#build-and-test-the-podman-client-for-windows)
   - [Build the Podman client](#build-the-podman-client)
   - [Download gvproxy.exe and win-sshproxy.exe](#download-gvproxyexe-and-win-sshproxyexe)
+  - [Add the Podman client to the PATH](#add-the-podman-client-to-the-path)
   - [Create a configuration file (optional)](#create-a-configuration-file-optional)
   - [Create and start a podman machine](#create-and-start-a-podman-machine)
   - [Run a container using podman](#run-a-container-using-podman)
@@ -243,6 +244,21 @@ Mode                 LastWriteTime         Length Name
 -a----         2/29/2024  12:10 PM        4089856 win-sshproxy.exe
 ```
 
+### Add the Podman client to the PATH
+
+To run the locally built client with `podman` instead of
+`.\bin\windows\podman.exe`, add the `bin\windows` folder to the `PATH` of the
+current terminal. From the root of the repository:
+
+```pwsh
+$env:Path = "$PWD\bin\windows;$env:Path"
+```
+
+:information_source: The folder is put first so that the locally built client
+takes precedence over any other Podman installed on the system. The change only
+applies to the current terminal. The commands in the rest of this document
+assume it has been done.
+
 ### Create a configuration file (optional)
 
 To test some particular configurations of Podman, create a `containers.conf`
@@ -270,13 +286,13 @@ Find the complete list of configuration options in the
 Execute the following commands in a terminal to create a Podman machine:
 
 ```pwsh
-.\bin\windows\podman.exe machine init
+podman machine init
 ```
 
 When `machine init` completes, run `machine start`:
 
 ```pwsh
-.\bin\windows\podman.exe machine start
+podman machine start
 ```
 
 :information_source: If the virtualization provider is Hyperv-V, execute the
@@ -287,7 +303,7 @@ above commands in an administrator terminal.
 Use the locally built Podman client for Windows to run containers:
 
 ```pwsh
-.\bin\windows\podman.exe run hello-world
+podman run hello-world
 ```
 
 To learn how to use the Podman client, refer to its
