@@ -883,8 +883,20 @@ func (r *ConmonOCIRuntime) PersistDirectoryPath(ctr *Container) (string, error) 
 
 // RuntimeInfo provides information on the runtime.
 func (r *ConmonOCIRuntime) RuntimeInfo() (*define.ConmonInfo, *define.OCIRuntimeInfo, error) {
-	runtimePackage := version.Package(r.path)
-	conmonPackage := version.Package(r.conmonPath)
+	return r.runtimeInfo(true)
+}
+
+// RuntimeVersionInfo provides version metadata for compat GET /version.
+func (r *ConmonOCIRuntime) RuntimeVersionInfo() (*define.ConmonInfo, *define.OCIRuntimeInfo, error) {
+	return r.runtimeInfo(false)
+}
+
+func (r *ConmonOCIRuntime) runtimeInfo(includePackage bool) (*define.ConmonInfo, *define.OCIRuntimeInfo, error) {
+	var runtimePackage, conmonPackage string
+	if includePackage {
+		runtimePackage = version.Package(r.path)
+		conmonPackage = version.Package(r.conmonPath)
+	}
 	runtimeVersion, err := r.getOCIRuntimeVersion()
 	if err != nil {
 		return nil, nil, fmt.Errorf("getting version of OCI runtime %s: %w", r.name, err)
@@ -899,14 +911,16 @@ func (r *ConmonOCIRuntime) RuntimeInfo() (*define.ConmonInfo, *define.OCIRuntime
 		Path:    r.conmonPath,
 		Version: conmonVersion,
 	}
-	ocirt := define.OCIRuntimeInfo{
-		Name:     r.name,
-		Path:     r.path,
-		Package:  runtimePackage,
-		Version:  runtimeVersion,
-		Features: r.featuresProvider(),
+	oci := define.OCIRuntimeInfo{
+		Name:    r.name,
+		Path:    r.path,
+		Package: runtimePackage,
+		Version: runtimeVersion,
 	}
-	return &conmon, &ocirt, nil
+	if includePackage {
+		oci.Features = r.featuresProvider()
+	}
+	return &conmon, &oci, nil
 }
 
 // Wait for a container which has been sent a signal to stop
