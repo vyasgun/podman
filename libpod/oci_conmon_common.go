@@ -1310,6 +1310,13 @@ func (r *ConmonOCIRuntime) configureConmonEnv() ([]string, error) {
 			// The NOTIFY_SOCKET must not leak into the environment.
 			continue
 		}
+		if strings.HasPrefix(v, "LISTEN_FDS=") || strings.HasPrefix(v, "LISTEN_PID=") || strings.HasPrefix(v, "LISTEN_FDNAMES=") {
+			// The LISTEN_* fds are already passed via --preserve-fds,
+			// and the variables are set in the container spec.
+			// The OCI runtime must not see them, as it would count
+			// the fds once again and leak conmon's fds into the container.
+			continue
+		}
 		if strings.HasPrefix(v, "DBUS_SESSION_BUS_ADDRESS=") && !rootless.IsRootless() {
 			// The DBUS_SESSION_BUS_ADDRESS must not leak into the environment when running as root.
 			// This is because we want to use the system session for root containers, not the user session.
